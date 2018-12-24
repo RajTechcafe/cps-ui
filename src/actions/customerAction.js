@@ -51,6 +51,12 @@ export function updateScreenTrackingFeature(param) {
     }
 }
 
+export function updateAnalyticsFeature(param) {
+    return (dispatch) =>{
+        dispatch({type:"CUSTOMER_ANALYTICS_UPDATE",payload:param})
+    }
+}
+
  // const fetchCustomerDetails = (dispatch) => dispatch({type:"FETCH_CUSTOMER_DETAIL",payload:CustomerDetail.fakeData})
 
  // export default fetchCustomerDetails;

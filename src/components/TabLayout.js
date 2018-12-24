@@ -39,7 +39,7 @@ class TabLayout extends React.Component {
   };
 
   render() {
-    const { classes, data, switchHandler,screenTrackingSwitchHandler } = this.props;
+    const { classes, data, switchHandler,screenTrackingSwitchHandler,analyticsTextChangeHandler } = this.props;
     const { value } = this.state;
     const {CustomerKey,customerid,customername,canAudit} = data;
       const MetaData ={
@@ -51,6 +51,11 @@ class TabLayout extends React.Component {
       const {theme} = data;
       const {features} = data;
       const {screenTracking} = data;
+      const {googleanalytics,appcenteranalytics} =Object.assign ({},data);
+      const Analytics ={
+        googleanalytics,
+        appcenteranalytics
+       } 
       console.log(data);
     return (
       <div className={classes.root}>
@@ -76,7 +81,7 @@ class TabLayout extends React.Component {
             <CustomerScreenTracking screenTracking = {screenTracking} switchHandler = {screenTrackingSwitchHandler} />
         </TabContainer>}
         {value === 4 && <TabContainer>
-            <CustomerAnalytics  />
+            <CustomerAnalytics analyticsData = {Analytics} onChangeHandler = {analyticsTextChangeHandler} />
         </TabContainer>}
       </div>
     );

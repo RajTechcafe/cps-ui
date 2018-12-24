@@ -1,15 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const styles = theme => ({
   root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    width: "100%"
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular
   },
   container: {
     display: "flex",
@@ -21,45 +26,60 @@ const styles = theme => ({
   },
   dense: {
     marginTop: 16
-  },
-  menu: {
-    width: 200
   }
 });
 
-function PaperSheet(props) {
-  const { classes } = props;
-
+function CustomerAnalytics(props) {
+  const { classes, analyticsData } = props;
+  console.log(analyticsData);
+  const dtoAnalytics = Object.keys(analyticsData).map(item => {
+    return { name: item, values: analyticsData[item] };
+  });
+ 
+  console.log(dtoAnalytics);
   return (
     <div>
-        <h2>Analytics</h2>
-      <Paper className={classes.root} elevation={1}>
-        <Typography variant="h5" component="h3">
-          This is a sheet of paper.
-        </Typography>
-        <Typography component="p">
-        <TextField
-                id="filled-full-width"
-                label="Key"
-                value ='123'
-                style={{ margin: 8 }}
-                placeholder="Key"
-                helperText="Unique key for analytics"
-                fullWidth
-                margin="normal"
-                variant="filled"
-                InputLabelProps={{
-                  shrink: true
-                }}
-              />
-        </Typography>
-      </Paper>
+      <h2>Analytics</h2>
+
+      {dtoAnalytics.map((item, rootIndex) => (
+        <div className={classes.root} key={rootIndex}>
+          <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography className={classes.heading}>{item.name}</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <form className={classes.container} noValidate autoComplete="off">
+                {Object.keys(item.values).map((key,childIndex) => (
+                  <TextField
+                    key={childIndex}
+                    id="filled-full-width"
+                    label={key}
+                    value={item.values[key]}
+                    style={{ margin: 8 }}
+                    className={classes.textField}
+                    placeholder="Key"
+                    onChange={event => {
+                      props.onChangeHandler(item.values[key]=event.target.value,dtoAnalytics);
+                    }}
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                ))}
+              </form>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </div>
+      ))}
     </div>
   );
 }
 
-PaperSheet.propTypes = {
-  classes: PropTypes.object.isRequired,
+CustomerAnalytics.propTypes = {
+  classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(PaperSheet);
+export default withStyles(styles)(CustomerAnalytics);

@@ -54,6 +54,14 @@ const defaultState = {
             // }
             
         }
+        case "CUSTOMER_ANALYTICS_UPDATE":{
+           
+            const copyCustomer = Object.assign({}, state);
+             console.log(copyCustomer);
+             return  copyCustomer;
+    
+            
+        }
         default: {
             return state;
         }

@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import {
   fetchCustomerDetails,
   updateCustomerFeature,
-  updateScreenTrackingFeature
+  updateScreenTrackingFeature,
+  updateAnalyticsFeature
 } from "../actions/customerAction";
 import { bindActionCreators } from "redux";
 class CustomerContainer extends Component {
@@ -12,6 +13,7 @@ class CustomerContainer extends Component {
     super(props);
     this.switchHandler = this.switchHandler.bind(this);
     this.screenTrackingSwitchHandler = this.screenTrackingSwitchHandler.bind(this);
+    this.analyticsTextChangeHandler = this.analyticsTextChangeHandler.bind(this);
   }
   componentDidMount() {
     this.props.fetchCustomerDetails();
@@ -30,7 +32,13 @@ class CustomerContainer extends Component {
 //         this.props.customer.screenTracking = nextProps.updatedScreenTrackingData;
 //     }
 //   }
+   analyticsTextChangeHandler(updatedObject,analyticsObejct){
+  
+    const analyticsData = Object.assign({},analyticsObejct);
+    console.log(analyticsData)
+    this.props.updateAnalyticsFeature(analyticsData);
 
+   }
   screenTrackingSwitchHandler(event, screenTrakingData, switchItem, pagename,actionType){
     debugger
     const copyScreenTrakingData =Object.assign([],screenTrakingData)
@@ -112,6 +120,7 @@ class CustomerContainer extends Component {
           data={this.props.customer}
           switchHandler={this.switchHandler}
           screenTrackingSwitchHandler={this.screenTrackingSwitchHandler}
+          analyticsTextChangeHandler = {this.analyticsTextChangeHandler}
         />
       </div>
     );
@@ -130,7 +139,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   //  console.log(fetchCustomerDetails);
   return bindActionCreators(
-    { fetchCustomerDetails, updateCustomerFeature,updateScreenTrackingFeature },
+    { fetchCustomerDetails, updateCustomerFeature,updateScreenTrackingFeature,updateAnalyticsFeature },
     dispatch
   );
 };
